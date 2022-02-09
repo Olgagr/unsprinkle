@@ -19,7 +19,7 @@ const PhotoGridItem = ({ id, src, alt, tags }) => {
           <picture>
             <source type="image/avif" srcSet={imageSrc.avif} />
             <source type="image/jpg" srcSet={imageSrc.jpg} />
-            <Image src={imageSrc.fallback} />
+            <Image src={imageSrc.fallback} alt={alt} />
           </picture>
         ) : (
           <p>Loading</p>
