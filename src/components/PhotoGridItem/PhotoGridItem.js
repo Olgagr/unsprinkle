@@ -1,11 +1,29 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components/macro";
 
 const PhotoGridItem = ({ id, src, alt, tags }) => {
+  const [imageSrc, setImageSrc] = useState({});
+
+  useEffect(() => {
+    setImageSrc({
+      fallback: `${src}.jpg`,
+      avif: `${src}@3x.avif 3x, ${src}@2x.avif 2x, ${src}.avif 1x`,
+      jpg: `${src}@3x.jpg 3x, ${src}@2x.jpg 2x, ${src}.jpg 1x`,
+    });
+  }, [src]);
+
   return (
     <article>
       <Anchor href={`/photos/${id}`}>
-        <Image src={src} />
+        {src ? (
+          <picture>
+            <source type="image/avif" srcSet={imageSrc.avif} />
+            <source type="image/jpg" srcSet={imageSrc.jpg} />
+            <Image src={imageSrc.fallback} />
+          </picture>
+        ) : (
+          <p>Loading</p>
+        )}
       </Anchor>
       <Tags>
         {tags.map((tag) => (
@@ -28,6 +46,7 @@ const Image = styled.img`
   height: 300px;
   border-radius: 2px;
   margin-bottom: 8px;
+  object-fit: cover;
 `;
 
 const Tags = styled.ul`
